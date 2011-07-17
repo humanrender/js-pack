@@ -1,5 +1,5 @@
+require "rubygems"
 require "thor"
-require "ruby-debug"
 require "yaml"
 require "json"
 

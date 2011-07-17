@@ -8,11 +8,11 @@ module ZipitUtils
       module ClassMethods
     
         def create_dir path
-          create_resource Dir, path
+          create_resource :dir, path
         end
 
         def create_file path, contents = nil
-          file = create_resource File, path do
+          file = create_resource :file, path do
             if block_given?
               yield
             else
@@ -24,12 +24,14 @@ module ZipitUtils
         private
     
           def create_resource resource_klass, path
-            exists = resource_klass.exists?(path)
-            resource =  case resource_klass.to_s
-              when "Dir"
-                Dir::mkdir(path) unless exists
+            exists = false
+            resource =  case resource_klass
+              when :dir
+                exists = Dir.exists?(path)
+                FileUtils::mkdir_p(path) unless exists
                 Dir.open(path) 
-              when "File"
+              when :file
+                exists = File.exists?(path)
                 file = File.open(path,exists ? "a" : "w+")
                 if !exists
                   file.write(yield) if block_given?

@@ -3,4 +3,7 @@ source :rubyforge
 gem "json"
 gem "github"
 gem 'thor'
-gem "ruby-debug19"
+
+platform :ruby_19 do
+  gem "ruby-debug19"
+end
