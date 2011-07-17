@@ -27,7 +27,7 @@ module ZipitUtils
             exists = false
             resource =  case resource_klass
               when :dir
-                exists = Dir.exists?(path)
+                exists = File.directory?(path)
                 FileUtils::mkdir_p(path) unless exists
                 Dir.open(path) 
               when :file
