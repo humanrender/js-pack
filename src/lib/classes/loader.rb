@@ -1,10 +1,18 @@
+require "rubygems"
+require "thor"
+require "yaml"
+require "json"
+require "ruby-debug"
+require 'pathname'
+
 module ZipitJS
   
   class Loader 
     
     def initialize
       require_relative "../mixins/resource.rb"
-      require_relative "erb_template.rb"
+      require_relative "logger.rb"
+      require_relative "template.rb"
       require_relative "runner.rb"
     end
     

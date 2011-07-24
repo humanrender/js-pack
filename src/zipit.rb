@@ -1,12 +1,6 @@
 #!/usr/bin/env ruby
 # require "./lib/zipit_utils/loader.rb"
 
-require "rubygems"
-require "thor"
-require "yaml"
-require "json"
-require "ruby-debug"
-
 require File.expand_path("../lib/classes/loader.rb", __FILE__)
 require File.expand_path("../lib/classes/engine.rb", __FILE__)
 

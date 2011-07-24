@@ -15,6 +15,17 @@ module ZipitJS
               end
             end
           end
+          
+          def relative_path destiny,  target
+            destiny = Pathname.new destiny
+            Pathname.new(target).relative_path_from destiny
+          end
+          
+          def relativize_paths obj, root, *relativizables
+            obj.each do |key,value|
+              obj[key] = relative_path root, value
+            end
+          end
     
           private
     
@@ -26,12 +37,19 @@ module ZipitJS
                   FileUtils::mkdir_p(path) unless exists
                   Dir.open(path) 
                 when :file
-                  exists = File.exists?(path)
-                  file = File.open(path,exists ? "a" : "w+")
-                  if !exists
-                    file.write(yield) if block_given?
+                  begin
+                    exists = File.exists?(path)
+                    file = File.open(path,exists ? "a" : "w+")
+                    # if !exists
+                      file.write(yield) if block_given?
+                    # end
+                    file
+                  rescue Exception => e
+                    file.close
+                    File.delete path
+                    ZipitJS::Logger.error e, "error: #{path}"
+                    return nil
                   end
-                  file
               end
               STDOUT.puts %~ #{exists ? "exists" : "create"} #{resource.path}~
               resource
