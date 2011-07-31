@@ -7,6 +7,8 @@ require File.expand_path("../lib/classes/engine.rb", __FILE__)
 class Zipit < Thor
   VERSION = "0.0"
   PROJECT_NAME = "Zipit"
+  CONF_FILE = "zipit_conf"
+  ROOT = Dir.pwd+"/"
   
   include ZipitJS
   
@@ -15,17 +17,39 @@ class Zipit < Thor
     @engine = ZipitJS::Engine.new
   end
   
+  no_tasks do
+
+    def load_config
+      ZipitJS::Config.load_config
+    end
+
+  end
+  
   map "-L" => :list
   
   desc "create APP_NAME", "Creates a new #{PROJECT_NAME} project "  
-  method_options :root => :string, :output => :string, :conf => :string      
+  method_options :root => :string, :output => :string, :conf => :string, :source => :string     
   def create(app_name)
     @engine.run_task :create, app_name, options
+  end
+  
+  desc "install", "Installs modules and resources from git"  
+  method_options :force => :boolean
+  def install
+    load_config
+    @engine.run_task :install
   end
   
   desc "list [SEARCH]", "list all of the available apps, limited by SEARCH"
   def list(search="")
     # list everything
+  end
+  
+  desc "uninstall", "Removes ZipitJS and it's dependencies"  
+  method_options :commit => :boolean, :rm_output=>:boolean
+  def uninstall
+    load_config
+    @engine.run_task :uninstall
   end
     
 end

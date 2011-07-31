@@ -18,7 +18,7 @@ module ZipitJS
           
           def relative_path destiny,  target
             destiny = Pathname.new destiny
-            Pathname.new(target).relative_path_from destiny
+            Pathname.new(target).relative_path_from(destiny).to_s
           end
           
           def relativize_paths obj, root, *relativizables
@@ -40,9 +40,9 @@ module ZipitJS
                   begin
                     exists = File.exists?(path)
                     file = File.open(path,exists ? "a" : "w+")
-                    # if !exists
+                    if !exists
                       file.write(yield) if block_given?
-                    # end
+                    end
                     file
                   rescue Exception => e
                     file.close

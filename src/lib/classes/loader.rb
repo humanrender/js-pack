@@ -11,9 +11,13 @@ module ZipitJS
     
     def initialize
       require_relative "../mixins/resource.rb"
+      require_relative "../mixins/paths.rb"
+      require_relative "config.rb"
       require_relative "logger.rb"
       require_relative "template.rb"
       require_relative "runner.rb"
+      require_relative "task.rb"
+      require_relative "git.rb"
     end
     
   end
