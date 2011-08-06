@@ -1,4 +1,4 @@
-module ZipitJS
+module JSPack
   module Logger
     def self.error exception, label = ""
       output = %~ #{label}

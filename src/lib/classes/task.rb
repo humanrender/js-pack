@@ -1,11 +1,11 @@
-module ZipitJS
+module JSPack
   module Utils; end
   
   module Tasks
     class Task
-      include ZipitJS::Mixins::Resource
-      include ZipitJS::Mixins::Paths
-      include ZipitJS::Utils
+      include JSPack::Mixins::Resource
+      include JSPack::Mixins::Paths
+      include JSPack::Utils
       
       def initialize
         set_output_path and set_source_path

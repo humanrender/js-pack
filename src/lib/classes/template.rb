@@ -1,6 +1,6 @@
 require "erb"
 
-module ZipitJS
+module JSPack
   module Template
     
     TEMPLATE_PATH = File.dirname(caller[0])+"/../templates/"

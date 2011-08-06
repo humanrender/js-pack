@@ -1,4 +1,4 @@
-module ZipitJS
+module JSPack
   module Utils
     module Git
       module Submodule

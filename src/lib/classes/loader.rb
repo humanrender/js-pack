@@ -5,7 +5,7 @@ require "json"
 require "ruby-debug"
 require 'pathname'
 
-module ZipitJS
+module JSPack
   
   class Loader 
     

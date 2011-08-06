@@ -1,13 +1,13 @@
-module ZipitJS::Tasks; end
+module JSPack::Tasks; end
 
-module ZipitJS
+module JSPack
   class Engine
     
-    include ZipitJS::Tasks
+    include JSPack::Tasks
     
     def initialize
       @loader = Loader.new
-      @runner = ZipitJS::Runner.new
+      @runner = JSPack::Runner.new
     end
     
     def run_task task, *args

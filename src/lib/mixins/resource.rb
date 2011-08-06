@@ -1,4 +1,4 @@
-module ZipitJS
+module JSPack
   module Mixins
     module Resource
     
@@ -47,7 +47,7 @@ module ZipitJS
                   rescue Exception => e
                     file.close
                     File.delete path
-                    ZipitJS::Logger.error e, "error: #{path}"
+                    JSPack::Logger.error e, "error: #{path}"
                     return nil
                   end
               end

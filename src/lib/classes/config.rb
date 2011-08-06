@@ -1,10 +1,10 @@
-module ZipitJS
+module JSPack
   module Config
     @@loaded = false
     
     def self.load_config load_project = true
-      @@internal = YAML::load(File.open Zipit::CONF_FILE)
-      @@project = JSON.parse(File.open(Zipit::ROOT+@@internal["config"]).read)
+      @@internal = YAML::load(File.open JP::CONF_FILE)
+      @@project = JSON.parse(File.open(JP::ROOT+@@internal["config"]).read)
       @@loaded = true
     end
     

@@ -1,9 +1,8 @@
-module ZipitJS
+module JSPack
   module Tasks
     class Uninstall < Task
       def uninstall
-        modules = ZipitJS::Config.config("modules")
-        # debugger
+        modules = JSPack::Config.config("modules")
         modules.each do |modvle, repository|
           module_path = source modvle
           if (dir_exists = File.directory?(module_path)) || (dir_exists && !Git::Submodule.has_submodule?(module_path))

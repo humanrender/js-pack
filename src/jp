@@ -1,26 +1,25 @@
 #!/usr/bin/env ruby
-# require "./lib/zipit_utils/loader.rb"
 
 require File.expand_path("../lib/classes/loader.rb", __FILE__)
 require File.expand_path("../lib/classes/engine.rb", __FILE__)
 
-class Zipit < Thor
+class JP < Thor
   VERSION = "0.0"
-  PROJECT_NAME = "Zipit"
-  CONF_FILE = "zipit_conf"
+  PROJECT_NAME = "JS Pack"
+  CONF_FILE = ".js-pack"
   ROOT = Dir.pwd+"/"
   
-  include ZipitJS
+  include JSPack
   
   def initialize a, b, c
     super a, b, c
-    @engine = ZipitJS::Engine.new
+    @engine = JSPack::Engine.new
   end
   
   no_tasks do
 
     def load_config
-      ZipitJS::Config.load_config
+      JSPack::Config.load_config
     end
 
   end
@@ -45,7 +44,7 @@ class Zipit < Thor
     # list everything
   end
   
-  desc "uninstall", "Removes ZipitJS and it's dependencies"  
+  desc "uninstall", "Removes JSPack and it's dependencies"  
   method_options :commit => :boolean, :rm_output=>:boolean
   def uninstall
     load_config
@@ -54,4 +53,4 @@ class Zipit < Thor
     
 end
 
-Zipit.start
+JP.start
