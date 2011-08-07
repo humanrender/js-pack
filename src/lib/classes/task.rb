@@ -6,7 +6,8 @@ module JSPack
       include JSPack::Mixins::Resource
       include JSPack::Mixins::Paths
       include JSPack::Utils
-      
+      include JSPack::Logger
+      include JSPack::UseConfig      
       def initialize
         set_output_path and set_source_path
       end

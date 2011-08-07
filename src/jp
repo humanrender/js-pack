@@ -32,11 +32,11 @@ class JP < Thor
     @engine.run_task :create, app_name, options
   end
   
-  desc "install", "Installs modules and resources from git"  
-  method_options :force => :boolean
+  desc "install", "Installs packages from git"  
+  method_options :force => :boolean, :v=>:boolean
   def install
     load_config
-    @engine.run_task :install
+    @engine.run_task :install, !!options[:v]
   end
   
   desc "list [SEARCH]", "list all of the available apps, limited by SEARCH"

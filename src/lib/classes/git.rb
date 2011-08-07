@@ -1,7 +1,49 @@
 module JSPack
   module Utils
     module Git
-      module Submodule
+      class Submodule
+        
+        # ====================
+        # = Instance Methods =
+        # ====================
+        
+        attr_reader :path, :source, :module
+        
+        def initialize modwle, data, source_path
+          @module = modwle
+          @source = data.class == String ? data : data["source"]
+          @path = "#{source_path}#{modwle}"
+        end
+        
+        def configured?; self.class.has_submodule?(@path); end
+        def exists?; File.directory? @path; end
+        
+        def install verbose = false
+          install! verbose do |status|
+            JSPack::Logger.log "#{status}: #{to_s}"
+          end
+        end
+        
+        private
+        
+        def install! submodule
+          if configured?
+            status, command = exists? ? [:exists, ""] : [:updating, "update --init #{@path}"]
+            (yield status if block_given?) and return command
+          else
+            (yield :adding if block_given?) and return"add #{repository} #{@path}"
+          end
+        end
+        
+        public
+        
+        def to_s
+          "#{@path}: #{@source}"
+        end       
+        
+        # =================
+        # = Class Methods =
+        # =================
         
         def self.remove module_path
           remove_config module_path
@@ -25,7 +67,12 @@ module JSPack
           %x[rm -rf "#{module_path}"]
         end
         
+        def self.execute command, verbose = false
+          %x[git submodule #{command}#{verbose ? "" : " 2>/dev/null"}] unless command.nil? || command.empty?
+        end
+        
       end      
+      
     end
   end
 end

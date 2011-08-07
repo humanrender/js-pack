@@ -2,17 +2,15 @@ module JSPack
   module Tasks
     class Install < Task
       
-      def install
-        modules = JSPack::Config.config("modules")
+      def install verbose = false
         %x[git init] unless File.directory? ".git"
-        modules.each do |modvle, repository| # => module, repository
-          source_path = "#{@source_path}#{modvle}"
-          command = Git::Submodule.has_submodule?(source_path) ? "update --init #{source_path}" : "add #{repository} #{source_path}"
-          %x[git submodule #{command}] 
+        log %~Installing pack contents for #{get_config :app_name}~
+        mapper = JSPack::ResourceMapper.new @source_path
+        packages = mapper.get_packages do |package|
+          package.submodule.install verbose
         end
-        
+        JSPack::Compiler.compile packages
       end
-      
     end
   end
 end

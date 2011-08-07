@@ -19,4 +19,24 @@ module JSPack
     end
     
   end
+  module UseConfig    
+    
+    def self.included base
+      base.extend ClassMethods
+    end
+    
+    def get_config key
+      Config.config key
+    end
+    
+    module ClassMethods
+      def get_config key
+        Config.config key
+      end
+      def app_config key
+        Config[key]
+      end      
+    end
+    
+  end
 end

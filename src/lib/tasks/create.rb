@@ -9,11 +9,10 @@ module JSPack
         root, conf = options[:root] || ".", "#{options[:conf]}.json" || "pack.json"
         output = options[:output] || "#{root}/" and source = options[:source] || "#{root}/source/"
         spec = conf.sub ".json", ".spec"
-        STDOUT.puts %~Installing new js-pack project "#{app_name}" at #{root} with output at #{output}~
+        log %~Creating new js-pack project "#{app_name}" at #{root} with output at #{output}~
         root = create_dir root; output = create_dir output
         spec = create_file path_for(spec,root), {}.to_yaml
         conf = create_file path_for(conf,root), get_example_json(app_name)
-      
         create_jpack_conf root, :output=>output.path, :conf=>conf.path, :source=>source, :spec=>spec
         conf.close and root.conf and output.close
       end
@@ -28,11 +27,7 @@ module JSPack
         end
       
         def get_example_json app_name
-          render "app_conf.erb", {
-            :app_name=>app_name,
-            :resources=>{},
-            :modules=>{}
-          }
+          render "app_conf.erb", { :app_name=>app_name }
         end
     
     end
