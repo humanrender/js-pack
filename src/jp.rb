@@ -4,10 +4,12 @@ require File.expand_path("../lib/classes/loader.rb", __FILE__)
 require File.expand_path("../lib/classes/engine.rb", __FILE__)
 
 class JP < Thor
+  
   VERSION = "0.0"
   PROJECT_NAME = "JS Pack"
-  CONF_FILE = ".js-pack"
   ROOT = Dir.pwd+"/"
+  
+  CONF_FILE = ".js-pack"
   
   include JSPack
   
@@ -52,5 +54,3 @@ class JP < Thor
   end
     
 end
-
-JP.start

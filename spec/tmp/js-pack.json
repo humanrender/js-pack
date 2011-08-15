@@ -1,0 +1,12 @@
+{
+  "app_name":"my_app",
+  "options":{
+    "minify":false
+  },
+  "packages":{
+    "timer":{
+      "compile":["jquery.timer.js"],
+      "source":"git@github.com:humanrender/jQuery-Timer.git"
+    }
+  }  
+}

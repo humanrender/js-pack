@@ -4,6 +4,7 @@ require "yaml"
 require "json"
 require "ruby-debug"
 require 'pathname'
+require "yui/compressor"
 
 module JSPack
   

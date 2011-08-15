@@ -1,0 +1,5 @@
+--- 
+output: spec/tmp/javacripts
+config: spec/tmp/js-pack.json
+source: spec/tmp/javacripts/source
+spec: spec/tmp/js-pack.spec

@@ -33,9 +33,17 @@ module JSPack
     def self.output content, min = false
       path = output_path min
       log %~#{File.exists?(path) ? "updating" : "creating"}: #{path}~
+      content = YUI::JavaScriptCompressor.new(:munge=>should_munge?).compress(content) if min
       file = File.open(path,"w+")
       file.write content
       file.close
+    end
+    
+    def self.should_munge?
+      debugger 
+      get_config "options", "minify" do
+        true
+      end
     end
         
   end
