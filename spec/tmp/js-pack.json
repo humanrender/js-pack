@@ -1,5 +1,5 @@
 {
-  "app_name":"my_app",
+  "app_name":"specs",
   "options":{
     "minify":false
   },
@@ -8,5 +8,5 @@
       "compile":["jquery.timer.js"],
       "source":"git@github.com:humanrender/jQuery-Timer.git"
     }
-  }  
+  }
 }

@@ -17,11 +17,12 @@ module JSPack
     end
     
     def get_packages &block
-      get_submodules do |submodule, data|
+      packages = get_submodules do |submodule, data|
         package = JSPack::Package.new submodule, data
-        block.call(package) unless block_given?
+        block.call(package) unless block.nil?
         package
       end
+      packages
     end
     
   end

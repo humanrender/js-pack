@@ -19,20 +19,22 @@ module JSPack
         def exists?; File.directory? @path; end
         
         def install verbose = false
-          install! verbose do |status|
+          install! do |status|
             JSPack::Logger.log "#{status}: #{to_s}"
           end
         end
         
         private
         
-        def install! submodule
-          if configured?
+        def install!
+          Submodule.execute (if configured?
             status, command = exists? ? [:exists, ""] : [:updating, "update --init #{@path}"]
-            (yield status if block_given?) and return command
+            yield status if block_given?
+            command
           else
-            (yield :adding if block_given?) and return"add #{repository} #{@path}"
-          end
+            yield :adding if block_given?
+            "add #{@source} #{@path}"
+          end)
         end
         
         public
@@ -51,7 +53,7 @@ module JSPack
         end
         
         def self.has_submodule? submodule
-          %x[ git ls-files --error-unmatch --stage -- "#{submodule}" | grep -E '^160000'] != ""
+          system %~ git ls-files --error-unmatch --stage -- "#{submodule}" 2>/dev/null | grep -E '^160000' 2>/dev/null~
         end
         
         def self.url module_path

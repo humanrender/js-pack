@@ -39,8 +39,7 @@ module JSPack
       file.close
     end
     
-    def self.should_munge?
-      debugger 
+    def self.should_munge? 
       get_config "options", "minify" do
         true
       end

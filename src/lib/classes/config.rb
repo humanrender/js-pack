@@ -2,10 +2,10 @@ module JSPack
   module Config
     @@loaded = false
     
-    def self.load_config
-      return if @@loaded
+    def self.load_config force = false
+      return if @@loaded && !force
       @@internal = YAML::load(File.open JP::CONF_FILE)
-      @@project = JSON.parse(File.open(JP::ROOT+@@internal["config"]).read)
+      @@project = @@internal["config"] ? JSON.parse(File.open(JP::ROOT+@@internal["config"]).read) : {}
       @@loaded = true
     end
     
@@ -21,18 +21,25 @@ module JSPack
       get_config_val @@project, *keys, &callback
     end
     
+    def self.internal_config
+      @@internal
+    end
+    
+    def self.project_config
+      @@project
+    end
+    
     private
       
       def self.get_config_val dictionary, *keys, &callback
         load_config unless @@loaded
         value = recursive_config dictionary, *keys
-        unless value && block_given?
-          dictionary_length = keys.length - 1
-          recursive_config dictionary, *keys, do |dic, key, depth|
-            if depth == dictionary_length
-              dic[key] = callback.call
+        if !value && callback
+          recursive_config dictionary, *keys, do |dic, key|
+            unless callback.nil?
+              callback.call dic, key
             else
-              dic[key] = {}
+              nil
             end
           end
         end || value
@@ -41,22 +48,36 @@ module JSPack
       def self.recursive_config dictionary, *keys, &block
         case keys.length
           when 1
-            if block_given?
-              yield dictionary[keys[0].to_s], dictionary
+            key = keys[0].to_s
+            value = dictionary[key]
+            if block_given? && !value
+              default_value = block.call dictionary, key
+              dictionary[key] = default_value if default_value
             else
-              dictionary[keys[0].to_s]
+              value
             end
           else 
-            if block_given?
-              keys.each_with_index do |key, depth|
-                yield dictionary, key.to_s, depth
-              end
-            else
-              keys.inject(dictionary) do |property, key| 
-                return nil unless property.key? key.to_s
-                property[key.to_s]
-              end
+            dictionary_length = keys.length - 1;  depth = 0;
+            created_hashes = []
+            property = dictionary
+            keys.each  do |key|
+              key = key.to_s
+              if depth == dictionary_length
+                default_value = block.nil? ? nil : block.call(property, key)
+                if default_value
+                  property[key] = default_value 
+                else
+                  new_properties = created_hashes.shift
+                  new_properties[0].delete new_properties[1]
+                end
+              else
+                created_hashes << [property,key]
+                property[key] = {}
+              end unless property.key? key
+              depth = depth + 1
+              property = property[key]
             end
+            property
         end
       end
     

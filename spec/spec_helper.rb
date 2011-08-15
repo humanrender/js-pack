@@ -18,15 +18,17 @@ module JSPackSpecHelper
     @engine = JSPack::Engine.new
   end
   
-  def mock_config yaml = nil
+  def mock_config yaml = nil, yaml_path = FAKE_YAML_PATH
     yaml ||= FAKE_YAML_CONFIG
-    File.delete FAKE_YAML_PATH if File.file? FAKE_YAML_PATH
-    File.open FAKE_YAML_PATH, "w+" do |file|
+    File.delete yaml_path if File.file? yaml_path
+    File.open yaml_path, "w+" do |file|
       file.write yaml.to_yaml
     end
-    FileUtils.cp yaml["config"].gsub(/^spec\/tmp\/(.+\.json)$/,"spec/files/\\1") , yaml["config"]
-    JP.const_set "CONF_FILE", FAKE_YAML_PATH
-    JSPack::Config.load_config
+    if yaml["config"]
+      FileUtils.cp yaml["config"].gsub(/^spec\/tmp\/(.+\.json)$/,"spec/files/\\1") , yaml["config"]
+    end
+    JP.const_set "CONF_FILE", yaml_path
+    JSPack::Config.load_config true
   end
   
 end
